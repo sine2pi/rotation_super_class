@@ -61,7 +61,7 @@ class CombinedRotaryEmbedding(nn.Module):
                 raise ValueError(f"Expected n_head {self.n_head} and h_dim {self.h_dim}, but got n_head {n_head} and h_dim {h_dim}")
         
         # Flatten for rotation
-        x = x.view(-1, self.h_dim)
+        x = x.reshape(-1, self.h_dim)
         
         # Apply Givens rotations
         for k in range(self.num_rotations):
