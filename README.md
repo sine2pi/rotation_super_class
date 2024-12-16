@@ -44,48 +44,28 @@ Reshapes the tensor back to its original dimensions.
 
 
 Part of the rotation block:
-$$
-n_{\text{state}}, n_{\text{head}}, \text{num\_rotations}, \text{base}=10000, \text{checkpointing}=\text{False}
-$$
+$$ n_{\text{state}}, n_{\text{head}}, \text{num\_rotations}, \text{base}=10000, \text{checkpointing}=\text{False} $$
 
 The hidden dimension \( \text{h\_dim} \) is calculated as:
-$$
-\text{h\_dim} = \frac{n_{\text{state}}}{n_{\text{head}}}
-$$
+$$ \text{h\_dim} = \frac{n_{\text{state}}}{n_{\text{head}}} $$
 
 The parameters \texttt{thetas} and \texttt{rotation\_pairs} are initialized as:
-$$
-\texttt{thetas} = \mathbf{0}
-$$
-$$
-\texttt{rotation\_pairs} = \text{rand}(\text{num\_rotations}, 2) \times \text{h\_dim}
-$$
+$$ \texttt{thetas} = \mathbf{0} $$
+$$ \texttt{rotation\_pairs} = \text{rand}(\text{num\_rotations}, 2) \times \text{h\_dim} $$
 
 The rotation matrix is an identity matrix:
-$$
-\texttt{rotation\_matrix} = \mathbf{I}_{\text{h\_dim}}
-$$
+$$ \texttt{rotation\_matrix} = \mathbf{I}_{\text{h\_dim}} $$
 
 The inverse frequency is computed as:
-$$
-\texttt{inv\_freq} = \frac{1.0}{\text{base}^{\frac{\text{torch.arange}(0, \text{h\_dim}, 2)}{\text{h\_dim}}}}
-$$
+$$ \texttt{inv\_freq} = \frac{1.0}{\text{base}^{\frac{\text{torch.arange}(0, \text{h\_dim}, 2)}{\text{h\_dim}}}} $$
 
 The Givens rotation matrix \( G \) is defined as:
-$$
-G = \mathbf{I}_{n_{\text{state}}}
-$$
-$$
-G_{ii} = \cos(\theta), \quad G_{ij} = -\sin(\theta)
-$$
-$$
-G_{ji} = \sin(\theta), \quad G_{jj} = \cos(\theta)
-$$
+$$ G = \mathbf{I}_{n_{\text{state}}} $$
+$$ G_{ii} = \cos(\theta), \quad G_{ij} = -\sin(\theta) $$
+$$ G_{ji} = \sin(\theta), \quad G_{jj} = \cos(\theta) $$
 
 The rotary orthogonal matrix \( R \) used in the forward pass is computed as:
-$$
-R = \text{rotation\_matrix} \cdot G
-$$
+$$ R = \text{rotation\_matrix} \cdot G $$
 
 $$ \mathbf{x}{\text{transformed}} = \mathbf{x} \cdot \left( \prod{k=1}^{N} G_k \right) \cdot R $$
 
